@@ -5,12 +5,12 @@ import subprocess
 def objdump(output_file, syntax="intel"):
     """
     Disassemble a binary file
-    objdump -d <filename>
+    objdump -d -M intel <filename>
     default: intel syntax
     """
     ext = ".exe" if os.name == "nt" else ""
     if syntax == "intel":
-        os.system(f"objdump -d -M intel -d {output_file}{ext} > {output_file}.asm")
+        os.system(f"objdump -d -M intel {output_file}{ext} > {output_file}.asm")
         print(f"objdump {output_file}.asm")
     else:
         os.system(f"objdump -d {output_file}{ext} > {output_file}.asm")
@@ -19,7 +19,7 @@ def objdump(output_file, syntax="intel"):
 def main():
     """
     Compile my C, run afterwards
-    gcc -o <output> <filename.c> && ./<output>
+    gcc -Wall -o <output> <filename.c> && ./<output>
     """
     if len(sys.argv) < 2:
         print("Usage: python compile.py <filename>")
