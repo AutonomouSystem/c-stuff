@@ -17,22 +17,21 @@ def objdump(output_file, syntax="intel"):
         os.system(f"objdump -d {output_file}{ext} > {output_file}.asm")
         print(f"objdump {output_file}.asm")
 
-def main():
+def find_main(output_file):
     """
-    Compile my C, run afterwards
-    gcc -Wall -o <output> <filename.c> && ./<output>
+    Find the main function in the disassembled file
     """
-    if len(sys.argv) < 2:
-        print("Usage: python compile.py <filename>")
-        sys.exit(1)
+    with open(f"{output_file}.asm", "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            if "main" in line:
+                print(line)
 
-    filename = sys.argv[1]
-    if not filename.endswith(".c"):
-        print("Invalid file extension. Please provide a C file.")
-        sys.exit(1)
-
+def compile_and_run(filename):
+    """
+    Compile the C file and run the compiled executable
+    """
     output = filename.replace(".c", "")
-
     try:
         compile_output = subprocess.check_output(
             f"gcc -Wall -o {output} {filename}",
@@ -55,11 +54,26 @@ def main():
 
         objdump(output, "intel")
         print(f"Compiled and ran {filename} -> {output}.exe")
-
     except subprocess.CalledProcessError as e:
         print("Compilation error:")
         print(e.output)
         sys.exit(1)
+
+def main():
+    """
+    Compile my C, run afterwards
+    gcc -o <output> <filename.c> && ./<output>
+    """
+    if len(sys.argv) < 2:
+        print("Usage: python compile.py <filename>")
+        sys.exit(1)
+
+    filename = sys.argv[1]
+    if not filename.endswith(".c"):
+        print("Invalid file extension. Please provide a C file.")
+        sys.exit(1)
+
+    compile_and_run(filename)
 
 if __name__ == "__main__":
     main()
