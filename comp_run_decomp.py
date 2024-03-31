@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import subprocess
 
@@ -47,13 +48,14 @@ def find_strings(output_file):
             if ".string" in line:
                 print(line)
 
-def find_functions_in_c(file.c):
+def find_functions_in_c(input_file):
     """
     TO-DO: Find the functions in the C file
     """
+    pattern = r"(?:int|void|float|char|bool|long|double|short|unsigned|long\s+long|size_t|struct\s+\w+|enum\s+\w+|[A-Za-z_]\w*|const\s+(?:int|char|float|double)|(?:int|char|float|double|void)\s*\*)\s+(\w+)\s*\("
     pass
 
-def find_functions_in_asm(file.s):
+def find_functions_in_asm(output_file):
     """
     TO-DO: Find the functions in the assembly file
     """
