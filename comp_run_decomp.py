@@ -19,13 +19,46 @@ def objdump(output_file, syntax="intel"):
 
 def find_main(output_file):
     """
-    Find the main function in the disassembled file
+    TO-DO: Find the main function in the disassembled file
     """
     with open(f"{output_file}.asm", "r") as f:
         lines = f.readlines()
         for line in lines:
             if "main" in line:
                 print(line)
+
+def find_syscalls(output_file):
+    """
+    TO-DO: Find the syscalls in the disassembled file
+    """
+    with open(f"{output_file}.asm", "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            if "syscall" in line:
+                print(line)
+
+def find_strings(output_file):
+    """
+    TO-DO: Find the strings in the disassembled file
+    """
+    with open(f"{output_file}.asm", "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            if ".string" in line:
+                print(line)
+
+def find_functions_in_c
+    """
+    TO-DO: Find the functions in the C file
+    """
+    pass
+
+def find_functions_in_asm
+    """
+    TO-DO: Find the functions in the assembly file
+    """
+    pass
+
 
 def compile_and_run(filename):
     """
