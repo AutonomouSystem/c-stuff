@@ -6,7 +6,8 @@ def objdump(output_file, syntax="intel"):
     """
     Disassemble a binary file
     objdump -d -M intel <filename>
-    default: intel syntax
+    default: Intel <inst> <src>, <dest>
+    alternate: AT&T <inst> <dest>, <src>
     """
     ext = ".exe" if os.name == "nt" else ""
     if syntax == "intel":
