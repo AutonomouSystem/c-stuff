@@ -47,13 +47,13 @@ def find_strings(output_file):
             if ".string" in line:
                 print(line)
 
-def find_functions_in_c
+def find_functions_in_c(file.c):
     """
     TO-DO: Find the functions in the C file
     """
     pass
 
-def find_functions_in_asm
+def find_functions_in_asm(file.s):
     """
     TO-DO: Find the functions in the assembly file
     """
