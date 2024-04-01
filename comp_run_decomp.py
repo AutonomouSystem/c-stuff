@@ -154,7 +154,7 @@ def compare_c_and_asm(c_code, asm_code):
             else:
                 print(asm_line.ljust(60), end='')
 
-            instruction = asm_line.split()[0]
+            instruction = asm_line.split()[0].strip()
             description = instruction_lookup.get(instruction, "")
             print(description)
 
