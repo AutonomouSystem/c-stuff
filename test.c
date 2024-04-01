@@ -97,23 +97,25 @@ int main(void) {
   test();
   printf("This is a int: %d\n", test2(1, 2));
   printf("This is a bool: %s\n", test3() ? "true" : "false");
-  printf("This is also a  bool: %d\n", test3());
+  printf("This is also a bool: %d\n", test3());
   printf("This is a double: %.10f\n", test4());
   printf("This is a float: %f\n", test5());
   printf("This is a char: %c\n", test6());
   printf("This is a long: %ld\n", test7());
   printf("This is a short: %d\n", test8());
   printf("This is a unsigned short: %d\n", test9());
-  printf("This is a unsigned int: %d\n", test10());
-  printf("This is a unsigned long: %ld\n", test11());
-  printf("This is a size_t: %zu\n", test12());
+  printf("This is a unsigned int: %u\n", test10());
+  printf("This is a unsigned long: %lu\n", test11());
+  // size_t size = test12();
+  // printf("This is a size_t: %zu\n", size);
 
   struct Point p = test13();
-  printf("This is a struct Point: { %d, %d }\n", p.x, p.y); 
+  printf("This is a struct Point (p.x, p.y): {%d, %d}\n", p.x, p.y); 
   printf("This is an enum Color BLUE: 0x%06X\n", test14());
   int *result = test15();
   printf("Value pointed to by the pointer: %d\n", *result);
   printf("Address of the pointer: %p\n", result);
   free(result);
+
   return 0;
 }
