@@ -51,6 +51,7 @@ def find_strings(output_file):
 def find_functions_in_c(input_file):
     """
     TO-DO: Find the functions in the C file
+    Usage: find_functions_in_c(input_file.c)
     """
     functions = []
     pattern = r"(?:int|void|float|char|bool|long|double|short|unsigned|long\s+long|size_t|struct\s+\w+|enum\s+\w+|[A-Za-z_]\w*|const\s+(?:int|char|float|double)|(?:int|char|float|double|void)\s*\*)\s+(\w+)\("
@@ -64,6 +65,7 @@ def find_functions_in_c(input_file):
 def find_functions_in_asm(input_file, functions):
     """
     Find the corresponding functions in the ASM file
+    Usage find_functions_in_asm(inputfile.asm, functions_list)
     """
     asm_functions = {}
     with open(input_file, "r") as f:
