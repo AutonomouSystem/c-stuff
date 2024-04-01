@@ -230,10 +230,10 @@ def compile_and_run(filename):
 def main():
     """
     Compile my C, run afterwards
-    gcc -o <output> <filename.c> && ./<output>
+    gcc -Wall -o <output> <filename.c> && ./<output>
     """
     if len(sys.argv) < 2:
-        print("Usage: python compile.py <filename>")
+        print("Usage: python compile.py <filename.c>")
         sys.exit(1)
 
     filename = sys.argv[1]
