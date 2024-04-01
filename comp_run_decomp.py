@@ -78,7 +78,7 @@ def find_functions_in_asm(input_file, functions):
                 asm_functions[function] = asm_code
     return asm_functions
 
-def compare_c_and_asm(c_code, asm_code):
+def compare_c_and_asm(c_code, asm_code, verbosity):
     c_lines = c_code.strip().split('\n')
     asm_lines = [line.strip() for line in asm_code]
 
@@ -142,6 +142,9 @@ def compare_c_and_asm(c_code, asm_code):
 
     asm_index = 0
     for c_line in c_lines:
+        if verbosity == "less" and not c_line.startswith(('void', 'int', 'bool', 'char', 'float', 'double')):
+            continue
+
         print(c_line.ljust(40), end='')
 
         if asm_index < len(asm_lines):
@@ -154,15 +157,15 @@ def compare_c_and_asm(c_code, asm_code):
             else:
                 print(asm_line.ljust(60), end='')
 
-            instruction = asm_line.split()[0].strip()
+            instruction = asm_line.split(None, 1)[0].strip()
             description = instruction_lookup.get(instruction, "")
-            print(description)
+            print(description.ljust(40))
 
             asm_index += 1
         else:
             print("")
 
-def compare_functions(c_file, asm_file):
+def compare_functions(c_file, asm_file, verbosity="less"):
     with open(c_file, "r") as file:
         c_code = file.read()
 
@@ -176,11 +179,13 @@ def compare_functions(c_file, asm_file):
         asm_functions[function_name] = asm_function_code
 
     for function_name, asm_code in asm_functions.items():
-        print(f"Function: {function_name}")
-        print("-" * 40)
         c_function = find_function_in_c(function_name, c_code)
-        compare_c_and_asm(c_function, asm_code)
-        print("\n")
+        if verbosity == "more" or (verbosity == "less" and c_function):
+            print(f"Function: {function_name}")
+            print("-" * 40)
+            compare_c_and_asm(c_function, asm_code, verbosity)
+            print("\n")
+
 
 def find_function_in_c(function_name, c_code):
     pattern = re.compile(rf"(?s)(\w+\s+{function_name}\s*\(.*?\)\s*\{{.*?\}})")
@@ -239,8 +244,9 @@ def main():
     compile_and_run(filename)
 
 if __name__ == "__main__":
+    # $ cat output.txt | grep "Function: test" -A 100
     main()
     functions = find_functions_in_c(sys.argv[1])
     asm_functions = find_functions_in_asm(f"{sys.argv[1].replace('.c', '')}.asm", functions)
-    compare_functions(sys.argv[1], f"{sys.argv[1].replace('.c', '')}.asm")
+    compare_functions(sys.argv[1], f"{sys.argv[1].replace('.c', '')}.asm", verbosity="more")
     
