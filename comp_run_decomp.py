@@ -52,14 +52,30 @@ def find_functions_in_c(input_file):
     """
     TO-DO: Find the functions in the C file
     """
-    pattern = r"(?:int|void|float|char|bool|long|double|short|unsigned|long\s+long|size_t|struct\s+\w+|enum\s+\w+|[A-Za-z_]\w*|const\s+(?:int|char|float|double)|(?:int|char|float|double|void)\s*\*)\s+(\w+)\s*\("
-    pass
+    functions = []
+    pattern = r"(?:int|void|float|char|bool|long|double|short|unsigned|long\s+long|size_t|struct\s+\w+|enum\s+\w+|[A-Za-z_]\w*|const\s+(?:int|char|float|double)|(?:int|char|float|double|void)\s*\*)\s+(\w+)\("
+    with open(input_file, "r") as f:
+        content = f.read()
+        matches = re.findall(pattern, content)
+        for match in matches:
+            functions.append(match)
+    return functions
 
-def find_functions_in_asm(output_file):
+def find_functions_in_asm(input_file, functions):
     """
-    TO-DO: Find the functions in the assembly file
+    Find the corresponding functions in the ASM file
     """
-    pass
+    asm_functions = {}
+    with open(input_file, "r") as f:
+        content = f.read()
+        for function in functions:
+            pattern = r"<" + re.escape(function) + r">:\n(.*?)\n\n"
+            match = re.search(pattern, content, re.DOTALL)
+            if match:
+                asm_code = match.group(1).strip().split("\n")
+                asm_functions[function] = asm_code
+    return asm_functions
+
 
 
 def compile_and_run(filename):
@@ -112,3 +128,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    functions = find_functions_in_c(sys.argv[1])
+    asm_functions = find_functions_in_asm(f"{sys.argv[1].replace('.c', '')}.asm", functions)
