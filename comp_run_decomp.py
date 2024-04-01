@@ -242,5 +242,5 @@ if __name__ == "__main__":
     main()
     functions = find_functions_in_c(sys.argv[1])
     asm_functions = find_functions_in_asm(f"{sys.argv[1].replace('.c', '')}.asm", functions)
-    compare_functions("test.c", "test.asm")
+    compare_functions(sys.argv[1], f"{sys.argv[1].replace('.c', '')}.asm")
     
