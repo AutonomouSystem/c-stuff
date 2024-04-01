@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+import time
 import subprocess
 
 def objdump(output_file, syntax="intel"):
@@ -201,24 +202,30 @@ def compile_and_run(filename):
     """
     output = filename.replace(".c", "")
     try:
+        start_time = time.time()
         compile_output = subprocess.check_output(
             f"gcc -Wall -o {output} {filename}",
             stderr=subprocess.STDOUT,
             shell=True,
             universal_newlines=True
         )
+        compile_time = time.time() - start_time
         print("Compilation output:")
         print(compile_output)
+        print(f"Compilation time: {compile_time:.2f} seconds")
 
         run_command = output
+        start_time = time.time()
         run_output = subprocess.check_output(
             run_command,
             stderr=subprocess.STDOUT,
             shell=True,
             universal_newlines=True
         )
+        run_time = time.time() - start_time
         print("Program output:")
         print(run_output)
+        print(f"Program execution time: {run_time:.2f} seconds")
 
         objdump(output, "intel")
         print(f"Compiled and ran {filename} -> {output}.exe")
@@ -248,5 +255,5 @@ if __name__ == "__main__":
     main()
     functions = find_functions_in_c(sys.argv[1])
     asm_functions = find_functions_in_asm(f"{sys.argv[1].replace('.c', '')}.asm", functions)
-    compare_functions(sys.argv[1], f"{sys.argv[1].replace('.c', '')}.asm", verbosity="more")
+    #compare_functions(sys.argv[1], f"{sys.argv[1].replace('.c', '')}.asm", verbosity="more")
     
